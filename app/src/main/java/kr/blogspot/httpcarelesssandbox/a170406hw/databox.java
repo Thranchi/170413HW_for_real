@@ -41,6 +41,10 @@ public class databox implements Parcelable{
         }
     };
 
+    public databox() {
+
+    }
+
     public void inputdata(String name, String phonenumber, String menu1, String menu2, String menu3,
                           String website, String date, String categorynumber){
         this.name=name;

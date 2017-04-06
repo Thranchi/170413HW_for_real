@@ -33,6 +33,7 @@
 
         <Button
             android:onClick="onClick"
+            android:id="@+id/b1add"
             android:layout_weight="1"
             android:text="맛집추가"
             android:layout_width="wrap_content"
