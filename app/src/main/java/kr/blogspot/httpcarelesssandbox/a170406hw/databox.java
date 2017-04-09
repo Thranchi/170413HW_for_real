@@ -3,20 +3,22 @@ package kr.blogspot.httpcarelesssandbox.a170406hw;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by 윤현하 on 2017-04-06.
  */
 
 public class databox implements Parcelable{
 
-    private String name="";
-    private String phonenumber="";
-    private String menu1="";
-    private String menu2="";
-    private String menu3="";
-    private String website="";
-    private String date="";
-    private String categorynumber="";
+    String name;
+    String phonenumber;
+    String menu1;
+    String menu2;
+    String menu3;
+    String website;
+    String date;
+    String categorynumber;
 
     protected databox(Parcel in) {
         name = in.readString();

@@ -8,22 +8,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+
+
 public class Main2Activity extends AppCompatActivity {
 
     final int MAIN_TO_ADD=12, MAIN_TO_MENU=13, MENU_TO_MAIN=31, ADD_TO_MAIN=21;
-    databox databox=new databox();
-    ArrayList<databox> carrier=new ArrayList<databox>();
-    ArrayAdapter<databox> adapter;
 
+    ArrayAdapter<databox> adapter;
+    databox databox=new databox();
+    static ArrayList<databox> carrier=new ArrayList<databox>();
     Button btnCancel, btnAdd;
     EditText etname, ettel,etmenu1,etmenu2,etmenu3,etaddr;
     RadioButton radio1,radio2,radio3;
-    int categorynumber=0;
+    int categorynumber=0,index=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class Main2Activity extends AppCompatActivity {
     public void onClick(View v){
 
         Intent intent = new Intent();
+
+        databox.inputdata("오! 이런 맙소사..","뭔가 잘못되었습니다","죄송합니다","저도 이럴줄은 몰랐는데","그럴줄알고 제가 이렇게","미리 짜놓은거죠","앱이 안멈춘다는게","다행아닙니까");
+        carrier.add(0, databox);
 
         if(v.getId()==R.id.btnAdd)
         {
@@ -82,17 +88,49 @@ public class Main2Activity extends AppCompatActivity {
             errorblock(date);
             errorblock(stringcategorynumber);
 
-            databox.inputdata(name,phonenumber,menu1,menu2,menu3,website,date,stringcategorynumber);
-            carrier.add(categorynumber, databox);
+            namemaker(name,0,0);//이름 중복불가처리
 
-            intent.putExtra("result",carrier);
+            databox.inputdata(name,phonenumber,menu1,menu2,menu3,website,date,stringcategorynumber);
+            index++;
+
+            carrier.add(index, databox);
+            Toast.makeText(getApplicationContext(), "It's " + carrier.get(index).name + "."+carrier.size(), Toast.LENGTH_SHORT).show();
+
+            intent.putExtra("result", name);
+            setResult(ADD_TO_MAIN,intent);
+
+            finish();
         }
         else if(v.getId()==R.id.btnCancel)
         {
+
             finish();
         }
 
-        setResult(ADD_TO_MAIN,intent);
+    }
+
+    private String namemaker(String name, int i, int number){
+        for(int j=0;j<=carrier.size();j++)
+        {
+            if(carrier.get(j).name.equals(name))
+            {
+                for(i=0;i<=carrier.size();i++){
+                    if (carrier.get(i).name.equals(name)) {
+                        number++;
+                        namemaker(name + "(number)",i=0,number);
+                    }
+                    else if(carrier.get(i).name.equals(name+ "(number)")) {
+                        number++;
+                        namemaker(name + "(number)",i=0,number);
+                    }
+                    else
+                        return name + "(number)";
+                }
+            }
+            else
+                return name;
+        }
+        return name;
     }
 
     private void errorblock(String thing){
@@ -109,5 +147,15 @@ public class Main2Activity extends AppCompatActivity {
         SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         return sdfNow.format(date);
+    }
+
+    public int lookingforsomethin(String clue){
+        for(int i=0;i<=carrier.size();i++)
+        {
+            if (carrier.get(i).name.equals(clue)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
