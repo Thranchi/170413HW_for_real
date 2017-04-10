@@ -13,6 +13,7 @@ public class databox implements Parcelable{
 
     String name;
     String phonenumber;
+    String kind;
     String menu1;
     String menu2;
     String menu3;
@@ -23,6 +24,7 @@ public class databox implements Parcelable{
     protected databox(Parcel in) {
         name = in.readString();
         phonenumber = in.readString();
+        kind = in.readString();
         menu1 = in.readString();
         menu2 = in.readString();
         menu3 = in.readString();
@@ -47,10 +49,11 @@ public class databox implements Parcelable{
 
     }
 
-    public void inputdata(String name, String phonenumber, String menu1, String menu2, String menu3,
+    public void inputdata(String name, String phonenumber, String kind, String menu1, String menu2, String menu3,
                           String website, String date, String categorynumber){
         this.name=name;
         this.phonenumber=phonenumber;
+        this.kind=kind;
         this.menu1=menu1;
         this.menu2=menu2;
         this.menu3=menu3;
@@ -68,6 +71,7 @@ public class databox implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(phonenumber);
+        dest.writeString(kind);
         dest.writeString(menu1);
         dest.writeString(menu2);
         dest.writeString(menu3);

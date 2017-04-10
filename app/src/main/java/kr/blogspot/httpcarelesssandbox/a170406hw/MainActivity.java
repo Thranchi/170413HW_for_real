@@ -1,6 +1,9 @@
 package kr.blogspot.httpcarelesssandbox.a170406hw;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -56,13 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 changenumberofstore();
             }
         }
-       /* else if(requestCode==PICK_CONTACT_REQUEST){
-            if(resultCode==_RESULT_CODE){
-                startActivity(data);
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);*/
     }
     public void getstorename(String storename){
         data.add(storename);
@@ -81,12 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                data.remove(position);
-                adapter.notifyDataSetChanged();
-                return false;
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("삭제확인");
+                dlg.setIcon(R.drawable.potato);
+                dlg.setMessage("선택한 맛집정보가 삭제됩니다.");
+                dlg.setNegativeButton("취소", null);
+                dlg.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Main2Activity main2=new Main2Activity();
+                        main2.removesomething(data.get(position));
+                        data.remove(position);
+                        int number=data.size();
+                        tv.setText("맛집  리스트("+number+"개)");
+                        adapter.notifyDataSetChanged();
+                        //Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view,"삭제되었습니다",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+                dlg.show();
+                return true;
             }
         });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

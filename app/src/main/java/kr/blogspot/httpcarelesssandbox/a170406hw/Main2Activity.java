@@ -1,6 +1,7 @@
 package kr.blogspot.httpcarelesssandbox.a170406hw;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,7 +57,7 @@ public class Main2Activity extends AppCompatActivity {
 
         Intent intent = new Intent();
 
-        databox.inputdata("오! 이런 맙소사..","뭔가 잘못되었습니다","죄송합니다","저도 이럴줄은 몰랐는데","그럴줄알고 제가 이렇게","미리 짜놓은거죠","앱이 안멈춘다는게","다행아닙니까");
+        databox.inputdata("오! 이런 맙소사..","뭔가 잘못되었습니다","죄송합니다","저도 이럴줄은 몰랐는데","그럴줄알고 제가 이렇게","미리 짜놓은거죠","앱이 안멈춘다는게","다행아닙니까","흐하하사사하하하사");
         carrier.add(0, databox);
 
         if(v.getId()==R.id.btnAdd)
@@ -65,6 +66,19 @@ public class Main2Activity extends AppCompatActivity {
                     =etname.getText().toString();
             String phonenumber
                     =ettel.getText().toString();
+            String kind="";
+            if(radio1.isChecked())
+            {
+                kind="chicken";
+            }
+            else if(radio2.isChecked())
+            {
+                kind="pizza";
+            }
+            else if(radio3.isChecked())
+            {
+                kind="hamburger";
+            }
             String menu1
                     =etmenu1.getText().toString();
             String menu2
@@ -90,11 +104,10 @@ public class Main2Activity extends AppCompatActivity {
 
             namemaker(name,0,0);//이름 중복불가처리
 
-            databox.inputdata(name,phonenumber,menu1,menu2,menu3,website,date,stringcategorynumber);
+            databox.inputdata(name,phonenumber,kind,menu1,menu2,menu3,website,date,stringcategorynumber);
             index++;
 
             carrier.add(index, databox);
-            Toast.makeText(getApplicationContext(), "It's " + carrier.get(index).name + "."+carrier.size(), Toast.LENGTH_SHORT).show();
 
             intent.putExtra("result", name);
             setResult(ADD_TO_MAIN,intent);
@@ -157,5 +170,10 @@ public class Main2Activity extends AppCompatActivity {
             }
         }
         return 0;
+    }
+
+    public void removesomething(String clue){
+        int bomb = lookingforsomethin(clue);
+        carrier.remove(bomb);
     }
 }
