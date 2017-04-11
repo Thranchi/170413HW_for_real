@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, MAIN_TO_ADD);
         //startActivity(intent);
     }
-
+//
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==MAIN_TO_ADD){
