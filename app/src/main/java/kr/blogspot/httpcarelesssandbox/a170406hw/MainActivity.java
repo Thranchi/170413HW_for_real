@@ -17,11 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv;
-    Button bt1;
     final int MAIN_TO_ADD=12, MAIN_TO_MENU=13, MENU_TO_MAIN=31, ADD_TO_MAIN=21;
     ListView listView;
     ArrayList<String> data=new ArrayList<String>();
@@ -38,17 +38,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void thisisit(){
         listView=(ListView)findViewById(R.id.listview);
-        adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,data);
+        //adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,data);
+        //adapter=new listlookadapter(this,data);
         listView.setAdapter(adapter);
-
-        tv=(TextView)findViewById(R.id.tv);
-        bt1=(Button)findViewById(R.id.b1add);
     }
 
     public void onClick(View v){
-        Intent intent = new Intent(this, Main2Activity.class);
-        startActivityForResult(intent, MAIN_TO_ADD);
-        //startActivity(intent);
+        if(v.getId()==R.id.b1add) {
+            Intent intent = new Intent(this, Main2Activity.class);
+            startActivityForResult(intent, MAIN_TO_ADD);
+        }
+
+        else if(v.getId()==R.id.b2namesort)
+        {
+            Collections.sort(data,nameAsc);
+            adapter.notifyDataSetChanged();
+        }
+
+        else if(v.getId()==R.id.b3kindsort)
+        {
+            Collections.sort(data,kindAsc);
+            adapter.notifyDataSetChanged();
+        }
+
+        else if(v.getId()==R.id.b4delete)
+        {
+
+        }
     }
 //
     @Override
@@ -57,26 +73,28 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode==ADD_TO_MAIN){
                 String name=data.getStringExtra("result");
                 getstorename(name);
-                changenumberofstore();
+//                changenumberofstore();
             }
         }
     }
+
     public void getstorename(String storename){
         data.add(storename);
         adapter.notifyDataSetChanged();
     }
-
+/*
     public void changenumberofstore(){
         int number=data.size();
         tv.setText("맛집  리스트("+number+"개)");
     }
-
+*/
     public void setListView(){
 
         //어뎁터 만들기
 
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
 
@@ -92,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         main2.removesomething(data.get(position));
                         data.remove(position);
                         int number=data.size();
-                        tv.setText("맛집  리스트("+number+"개)");
+                        //tv.setText("맛집  리스트("+number+"개)");
                         adapter.notifyDataSetChanged();
                         //Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                         Snackbar.make(view,"삭제되었습니다",Snackbar.LENGTH_SHORT).show();
@@ -118,4 +136,20 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("clue", name);
         startActivityForResult(intent, MAIN_TO_MENU);
     }
+
+    Comparator<String> nameAsc= new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+            //오름차 내림차 바꾸려면 o1 o2만 바꾸면 돼
+        }
+    };//이름순
+
+    Comparator<String> kindAsc= new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+            //오름차 내림차 바꾸려면 o1 o2만 바꾸면 돼
+        }
+    };//종류순
 }

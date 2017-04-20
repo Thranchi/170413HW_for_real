@@ -21,6 +21,80 @@ public class databox implements Parcelable{
     String date;
     String categorynumber;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getMenu1() {
+        return menu1;
+    }
+
+    public void setMenu1(String menu1) {
+        this.menu1 = menu1;
+    }
+
+    public String getMenu2() {
+        return menu2;
+    }
+
+    public void setMenu2(String menu2) {
+        this.menu2 = menu2;
+    }
+
+    public String getMenu3() {
+        return menu3;
+    }
+
+    public void setMenu3(String menu3) {
+        this.menu3 = menu3;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getCategorynumber() {
+        return categorynumber;
+    }
+
+    public void setCategorynumber(String categorynumber) {
+        this.categorynumber = categorynumber;
+    }
+
+
+
     protected databox(Parcel in) {
         name = in.readString();
         phonenumber = in.readString();

@@ -11,33 +11,68 @@
 
     <LinearLayout
         android:padding="5dp"
+        android:orientation="vertical"
         android:background="#ffe5e5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_margin="8dp"
-            android:layout_width="40dp"
-            android:layout_height="33dp"
-            android:src="@drawable/potato"  />
-
-        <TextView
-            android:id="@+id/tv"
-            android:textStyle="bold"
-            android:layout_weight="2"
-            android:textSize="20dp"
-            android:textColor="#3276a0"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="맛집  리스트(0개)"  />
+            android:orientation="horizontal">
 
-        <Button
-            android:onClick="onClick"
-            android:id="@+id/b1add"
-            android:layout_weight="1"
-            android:text="맛집추가"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"  />
+            <Button
+                android:onClick="onClick"
+                android:background="#ffffff"
+                android:id="@+id/b1add"
+                android:layout_weight="1"
+                android:text="맛집추가"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
+
+            <Button
+                android:onClick="onClick"
+                android:background="#ffffff"
+                android:id="@+id/b2namesort"
+                android:layout_weight="1"
+                android:text="이름정렬"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
+
+            <Button
+                android:onClick="onClick"
+                android:background="#ffffff"
+                android:id="@+id/b3kindsort"
+                android:layout_weight="1"
+                android:text="종류정렬"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
+
+            <Button
+                android:onClick="onClick"
+                android:background="#ffffff"
+                android:id="@+id/b4delete"
+                android:layout_weight="1"
+                android:text="삭제"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/search_bar"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="원하는 키워드를 입력하세요"/>
+
     </LinearLayout>
 
     <ListView
