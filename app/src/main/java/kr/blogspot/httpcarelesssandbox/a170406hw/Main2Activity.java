@@ -28,6 +28,7 @@ public class Main2Activity extends AppCompatActivity {
     EditText etname, ettel,etmenu1,etmenu2,etmenu3,etaddr;
     RadioButton radio1,radio2,radio3;
     int categorynumber=0,index=0;
+    String bag[]=new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,11 @@ public class Main2Activity extends AppCompatActivity {
         {
             String name
                     =etname.getText().toString();
+            name=namemaker(name,0,0);//이름 중복불가처리
+            name=errorblock(name);
             String phonenumber
                     =ettel.getText().toString();
+            phonenumber=errorblock(phonenumber);
             String kind="";
             if(radio1.isChecked())
             {
@@ -81,35 +85,35 @@ public class Main2Activity extends AppCompatActivity {
             }
             String menu1
                     =etmenu1.getText().toString();
+            menu1=errorblock(menu1);
+
             String menu2
                     =etmenu2.getText().toString();
+            menu2=errorblock(menu2);
+
             String menu3
                     =etmenu3.getText().toString();
+            menu3=errorblock(menu3);
+
             String website
                     =etaddr.getText().toString();
+            website=errorblock(website);
+
             String date
                     =datemaker().toString();
+            date=errorblock(date);
+
             categorynumber++;
             String stringcategorynumber
                     =categorynumber+"";
-
-            errorblock(name);
-            errorblock(phonenumber);
-            errorblock(menu1);
-            errorblock(menu2);
-            errorblock(menu3);
-            errorblock(website);
-            errorblock(date);
-            errorblock(stringcategorynumber);
-
-            namemaker(name,0,0);//이름 중복불가처리
+            stringcategorynumber=errorblock(stringcategorynumber);
 
             databox.inputdata(name,phonenumber,kind,menu1,menu2,menu3,website,date,stringcategorynumber);
             index++;
 
             carrier.add(index, databox);
 
-            intent.putExtra("result", name);
+            intent.putExtra("result", databox);
             setResult(ADD_TO_MAIN,intent);
 
             finish();
@@ -122,17 +126,39 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    private String errorblock(String thing){
+        if(thing.getBytes().length==0)
+        {
+           thing="입력된 값 없음";
+        }
+        return thing;
+    }
+
+    public String datemaker(){
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        return sdfNow.format(date);
+    }
+
+    public  int getIndex()
+    {
+        return index;
+    }
+
     private String namemaker(String name, int i, int number){
         for(int j=0;j<=carrier.size();j++)
         {
-            if(carrier.get(j).name.equals(name))
+            if(carrier.get(j).equals(name))
             {
-                for(i=0;i<=carrier.size();i++){
-                    if (carrier.get(i).name.equals(name)) {
+                for(i=0;i<=index;i++){
+                    if (carrier.get(j).equals(name)) {
                         number++;
                         namemaker(name + "(number)",i=0,number);
                     }
-                    else if(carrier.get(i).name.equals(name+ "(number)")) {
+                    else if(carrier.get(j).equals(name+ "(number)")) {
                         number++;
                         namemaker(name + "(number)",i=0,number);
                     }
@@ -144,22 +170,6 @@ public class Main2Activity extends AppCompatActivity {
                 return name;
         }
         return name;
-    }
-
-    private void errorblock(String thing){
-        if(thing.getBytes().length==0)
-        {
-            thing="입력된 값 없음";
-        }
-    }
-
-    public String datemaker(){
-
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-        return sdfNow.format(date);
     }
 
     public int lookingforsomethin(String clue){

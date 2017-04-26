@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,24 +20,30 @@ import java.util.Comparator;
  * Created by 윤현하 on 2017-04-13.
  */
 
-public class listlookadapter extends BaseAdapter {
+public class listlookadapter extends BaseAdapter implements Checkable, Filterable{
 
-    ArrayList<databox> data=new ArrayList<databox>();
+
+    ArrayList<databox> item=new ArrayList<databox>();
+    ArrayList<databox> filteritem=item;
+    ArrayList<String> listlist=new ArrayList<String>();
     Context context;
+    int index=0;
+    int checkboxstatus=0;
+    String herename;
+    MainActivity main=new MainActivity();
+    Filter listFilter;
+    public listlookadapter(){
 
-    public listlookadapter(Context context, ArrayList<databox> data){
-        this.context=context;
-        this.data=data;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return item.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return item.get(position);
     }
 
     @Override
@@ -43,18 +53,44 @@ public class listlookadapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        final int pos=position;
+        final Context context=parent.getContext();
+
         if(convertView==null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.listlook, null);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.listlook, parent, false);
+            //convertView = LayoutInflater.from(context).inflate(R.layout.listlook, null);
         }
         TextView listname=(TextView)convertView.findViewById(R.id.listname);
         TextView listtel=(TextView)convertView.findViewById(R.id.listtel);
         ImageView listpicture=(ImageView)convertView.findViewById(R.id.listpicture);
+        CheckBox cb=(CheckBox)convertView.findViewById(R.id.cb);
 
-        databox databox = data.get(position);
+        if(checkboxstatus==1)
+            cb.setVisibility(View.VISIBLE);
+        else if(checkboxstatus==0)
+            cb.setVisibility(View.GONE);
+
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String result = "";
+
+
+            }
+        });
+
+
+        /*
+        Main2Activity m2 = new Main2Activity();
+        int key=m2.lookingforsomethin(data.get(position).name);
+        */
+        databox databox = item.get(position);
 
         listname.setText(databox.getName());
+        herename=databox.getName();
         listtel.setText(databox.getPhonenumber());
-
         if (databox.getKind().equals("chicken")) {
             listpicture.setImageResource(R.drawable.chicken);
         } else if (databox.getKind().equals("pizza")) {
@@ -63,7 +99,7 @@ public class listlookadapter extends BaseAdapter {
             listpicture.setImageResource(R.drawable.hamburger);
         }
 
-        return null;
+        return convertView;
     }
 
     Comparator<databox> nameAsc=new Comparator<databox>() {
@@ -81,13 +117,97 @@ public class listlookadapter extends BaseAdapter {
     };
 
     public void setnameSort(){
-        Collections.sort(data,nameAsc);
+        Collections.sort(item,nameAsc);
         this.notifyDataSetChanged();
     }
 
     public void setkindSort(){
-        Collections.sort(data,kindAsc);
+        Collections.sort(item,kindAsc);
         this.notifyDataSetChanged();
     }
 
+    public void addItem(databox databox) {
+        item.add(databox);
+    }
+
+    public String getmenuname() {
+        return herename;
+    }
+
+    public void orderreicever(boolean deleteorder){
+        if(deleteorder)
+        {
+            checkboxstatus=1;
+        }
+        else
+            checkboxstatus=0;
+    }
+
+
+    @Override
+    public void setChecked(boolean checked) {
+
+    }
+
+    @Override
+    public boolean isChecked() {
+        return false;
+    }
+
+    @Override
+    public void toggle() {
+
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(listFilter==null)
+        {
+            listFilter=new ListFilter();
+        }
+        return listFilter;
+    }
+
+    private class ListFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults() ;
+
+            if (constraint == null || constraint.length() == 0)
+            {
+                results.values = item ;
+                results.count = item.size() ;
+            }
+            else
+            {
+                    ArrayList<databox> itemList = new ArrayList<databox>() ;
+                    for (databox items : item)
+                    {
+                        if (items.getName().toUpperCase().contains(constraint.toString().toUpperCase()))
+                        {
+                            itemList.add(items) ;
+                        }
+                    }
+                    results.values = itemList ;
+                    results.count = itemList.size() ;
+            }
+
+                return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteritem=(ArrayList<databox>) results.values;
+
+            if(results.count > 0){
+                notifyDataSetChanged();
+            }
+            else {
+                notifyDataSetInvalidated();
+            }
+        }
+    }
 }
+

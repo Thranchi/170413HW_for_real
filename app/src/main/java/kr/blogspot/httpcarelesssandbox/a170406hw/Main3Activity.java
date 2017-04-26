@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Main3Activity extends AppCompatActivity {
 
@@ -19,12 +22,89 @@ public class Main3Activity extends AppCompatActivity {
     TextView txtname, etmenu1, etmenu2, etmenu3, tvTel, tvURL, tvRegdate;
     ImageView imgno, imageView2, imageView3;
     int key = 0;
+    ArrayList<databox> menubook=new ArrayList<databox>();
+
+
+    String name="";
+    String phonenumber="";
+    String kind="";
+    String menu1="";
+    String menu2="";
+    String menu3="";
+    String website="";
+    String date="";
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getMenu1() {
+        return menu1;
+    }
+
+    public String getMenu2() {
+        return menu2;
+    }
+
+    public String getMenu3() {
+        return menu3;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public void setMenu1(String menu1) {
+        this.menu1 = menu1;
+    }
+
+    public void setMenu2(String menu2) {
+        this.menu2 = menu2;
+    }
+
+    public void setMenu3(String menu3) {
+        this.menu3 = menu3;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
+        Main2Activity main2 = new Main2Activity();
+        Intent intent = getIntent();
         thisisit();
         reaction();
     }

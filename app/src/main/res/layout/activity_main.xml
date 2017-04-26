@@ -59,7 +59,7 @@
                 android:background="#ffffff"
                 android:id="@+id/b4delete"
                 android:layout_weight="1"
-                android:text="삭제"
+                android:text="선택"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
