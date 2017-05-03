@@ -65,13 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                ArrayList<databox> searchresult = new ArrayList<databox>();
                 String search = s.toString();
 
-                if (search.length() > 0)
-                    listView.setFilterText(search);
-                else
-                    listView.clearTextFilter();
+                for(databox temp : carrier) {
+                    if(temp.getName().contains(search)) {
+                        searchresult.add(temp);
+                    }
+                }
 
+                adapter.setData(searchresult);
+
+                adapter.notifyDataSetChanged();
             }
         });
     }

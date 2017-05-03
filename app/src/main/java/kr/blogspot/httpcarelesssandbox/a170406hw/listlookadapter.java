@@ -48,6 +48,11 @@ public class listlookadapter extends BaseAdapter implements Checkable, Filterabl
     {
         this.checkboxstatus = del;
     }
+    public void setData(ArrayList<databox> data)
+    {
+        this.item = data;
+    }
+
     @Override
     public int getCount() {
         return item.size();
