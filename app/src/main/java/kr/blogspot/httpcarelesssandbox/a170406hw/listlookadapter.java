@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -22,20 +23,31 @@ import java.util.Comparator;
 
 public class listlookadapter extends BaseAdapter implements Checkable, Filterable{
 
-
+    ArrayList<Integer> deadlist;
     ArrayList<databox> item=new ArrayList<databox>();
     ArrayList<databox> filteritem=item;
     ArrayList<String> listlist=new ArrayList<String>();
     Context context;
     int index=0;
-    int checkboxstatus=0;
+    boolean checkboxstatus=false;
     String herename;
     MainActivity main=new MainActivity();
     Filter listFilter;
-    public listlookadapter(){
 
+    public listlookadapter(Context context, ArrayList<databox> data, boolean del) {
+        this.context = context;
+        this.item = data;
+        this.checkboxstatus = del;
+        deadlist = new ArrayList<Integer>();
     }
-
+    public ArrayList<Integer> getbomb()
+    {
+        return deadlist;
+    }
+    public void setdelbutton(boolean del)
+    {
+        this.checkboxstatus = del;
+    }
     @Override
     public int getCount() {
         return item.size();
@@ -67,25 +79,28 @@ public class listlookadapter extends BaseAdapter implements Checkable, Filterabl
         ImageView listpicture=(ImageView)convertView.findViewById(R.id.listpicture);
         CheckBox cb=(CheckBox)convertView.findViewById(R.id.cb);
 
-        if(checkboxstatus==1)
+        if(checkboxstatus)
             cb.setVisibility(View.VISIBLE);
-        else if(checkboxstatus==0)
+        else
             cb.setVisibility(View.GONE);
 
-        cb.setOnClickListener(new View.OnClickListener() {
+
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                String result = "";
-
-
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CheckBox current = (CheckBox) buttonView;
+                if(isChecked)
+                {
+                    deadlist.add(Integer.parseInt(current.getTag().toString()));
+                }
+                else
+                {
+                    deadlist.remove(Integer.parseInt(current.getTag().toString()));
+                }
             }
         });
 
-
-        /*
-        Main2Activity m2 = new Main2Activity();
-        int key=m2.lookingforsomethin(data.get(position).name);
-        */
+        cb.setTag(position);
         databox databox = item.get(position);
 
         listname.setText(databox.getName());
@@ -132,15 +147,6 @@ public class listlookadapter extends BaseAdapter implements Checkable, Filterabl
 
     public String getmenuname() {
         return herename;
-    }
-
-    public void orderreicever(boolean deleteorder){
-        if(deleteorder)
-        {
-            checkboxstatus=1;
-        }
-        else
-            checkboxstatus=0;
     }
 
 
@@ -196,6 +202,9 @@ public class listlookadapter extends BaseAdapter implements Checkable, Filterabl
                 return results;
 
         }
+
+
+
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {

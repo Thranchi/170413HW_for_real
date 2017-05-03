@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     databox goaway;
     EditText search_bar;
     boolean deleteorder=false;
+    ArrayList<Integer> deadlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +48,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("될때가 지났다");
         thisisit();
-        search();
+
         setListView();
+
+        search_bar = (EditText) findViewById(R.id.search_bar);
+        search_bar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String search = s.toString();
+
+                if (search.length() > 0)
+                    listView.setFilterText(search);
+                else
+                    listView.clearTextFilter();
+
+            }
+        });
     }
 
     private void thisisit(){
         listView=(ListView)findViewById(R.id.listview);
         //adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,data);
-        search_bar = (EditText) findViewById(R.id.search_bar);
-        adapter=new listlookadapter();
+
+        adapter=new listlookadapter(this,carrier,deleteorder);
         listView.setAdapter(adapter);
         choice=(Button)findViewById(R.id.b4delete);
     }
@@ -79,33 +105,42 @@ public class MainActivity extends AppCompatActivity {
 
         else if(v.getId()==R.id.b4delete)
         {
-            if(choice.getText().toString().equals("삭제"))
-            {
-                /*listView.setAdapter(adapter);
+            if(choice.getText().equals("선택")) {
+                deleteorder = true;
+
+                adapter.setdelbutton(deleteorder);
+
+                adapter.notifyDataSetChanged();
+
+                choice.setText("삭제");
+            } else {
+                deadlist = adapter.getbomb();
+
+
                 AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
                 dlg.setTitle("삭제확인");
                 dlg.setIcon(R.drawable.potato);
-                dlg.setMessage("선택한 맛집정보가 삭제됩니다.");
+                dlg.setMessage("선택한 맛집을 정말 삭제하시겠습니까?");
                 dlg.setNegativeButton("취소", null);
-
                 dlg.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
+                    //리스트 삭제
                     public void onClick(DialogInterface dialog, int which) {
+
+                        for(int i = deadlist.size()-1;i>=0;i--) {
+                            Log.i("deleteTest", Integer.toString(deadlist.get(i)));
+                            carrier.remove(deadlist.get(i).intValue());
+
+                        }
+                        deleteorder= false;
+                        adapter.setdelbutton(deleteorder);
+                        choice.setText("선택");
+
+                        adapter.notifyDataSetChanged();
+
                     }
                 });
-                dlg.show();*/
-                deleteorder=false;
-                adapter.orderreicever(deleteorder);
-                adapter.notifyDataSetChanged();
-                choice.setText("선택");
-            }
-            else if(choice.getText().toString().equals("선택"))
-            {
-                deleteorder=true;
-                adapter.orderreicever(deleteorder);
-                adapter.notifyDataSetChanged();
-                choice.setText("삭제");
-                listView.setAdapter(adapter);
+                dlg.show();
             }
         }
     }
@@ -169,30 +204,5 @@ public class MainActivity extends AppCompatActivity {
         return deleteorder;
     }
 
-    public void search(){
-        search_bar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String search = s.toString();
-                if (search.length() > 0)
-                    listView.setFilterText(search);
-                    adapter.getFilter().filter();
-                else
-                    listView.clearTextFilter();
-
-            }
-        });
-
-    }
 }
 
